@@ -4,8 +4,6 @@
     ViewData["Title"] = "Create";
 }
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
 <script>
     $(document).ready(function () {
         $("#btnSubmit").click(function () {
@@ -27,10 +25,11 @@
                 },
                 contentType: "application/json",
                 success: function (data) {
-                    alert(data.msg);
+                    alert("New league created with success!");
+                    window.location.href = "/LeagueOfHeroes/Index"
                 },
                 error: function () {
-                    alert("Error occured!!")
+                    alert("Error!")
                 }
             });
         });
@@ -63,7 +62,7 @@
                     {
                         <tr>
                             <td>
-                                <input type='checkbox' id="@item.Codigo" name='heroChecked' /> @Html.DisplayFor(modelItem => item.Name)
+                                <input type='checkbox' id="@item.Id" name='heroChecked' /> @Html.DisplayFor(modelItem => item.Name)
                             </td>
                         </tr>
                     }

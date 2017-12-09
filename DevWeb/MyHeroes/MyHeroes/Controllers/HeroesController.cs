@@ -34,7 +34,7 @@ namespace MyHeroes.Controllers
             }
 
             var hero = await _context.Hero
-                .SingleOrDefaultAsync(m => m.Codigo == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (hero == null)
             {
                 return NotFound();
@@ -52,7 +52,7 @@ namespace MyHeroes.Controllers
         // POST: Heroes/Create      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Codigo,Name,Power")] Hero hero)
+        public async Task<IActionResult> Create([Bind("Id,Name,Power")] Hero hero)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace MyHeroes.Controllers
                 return NotFound();
             }
 
-            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Codigo == id);
+            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == id);
             if (hero == null)
             {
                 return NotFound();
@@ -82,9 +82,9 @@ namespace MyHeroes.Controllers
         // POST: Heroes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Codigo,Name,Power")] Hero hero)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Power")] Hero hero)
         {
-            if (id != hero.Codigo)
+            if (id != hero.Id)
             {
                 return NotFound();
             }
@@ -98,7 +98,7 @@ namespace MyHeroes.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HeroExists(hero.Codigo))
+                    if (!HeroExists(hero.Id))
                     {
                         return NotFound();
                     }
@@ -121,7 +121,7 @@ namespace MyHeroes.Controllers
             }
 
             var hero = await _context.Hero
-                .SingleOrDefaultAsync(m => m.Codigo == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (hero == null)
             {
                 return NotFound();
@@ -135,7 +135,7 @@ namespace MyHeroes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Codigo == id);
+            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == id);
             _context.Hero.Remove(hero);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -143,7 +143,7 @@ namespace MyHeroes.Controllers
 
         private bool HeroExists(int id)
         {
-            return _context.Hero.Any(e => e.Codigo == id);
+            return _context.Hero.Any(e => e.Id == id);
         }
     }
 }

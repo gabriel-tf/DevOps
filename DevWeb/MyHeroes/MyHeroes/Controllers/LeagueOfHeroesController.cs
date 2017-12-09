@@ -26,15 +26,17 @@ namespace MyHeroes.Controllers
         }
 
         // GET: LeagueOfHeroes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var leagueOfHeroes = await _context.LeagueOfHeroes
-                .SingleOrDefaultAsync(m => m.Codigo == id);
+            var leagueOfHeroes = (from l in _context.LeagueOfHeroes.Include(x => x.Heroes)
+                                  where l.Id == id
+                                  select l).FirstOrDefault();
+            
             if (leagueOfHeroes == null)
             {
                 return NotFound();
@@ -60,7 +62,7 @@ namespace MyHeroes.Controllers
             foreach (var heroId in heroes)
             {
                 Hero hero = new Hero();
-                hero = await _context.Hero.SingleOrDefaultAsync(m => m.Codigo == heroId);
+                hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == heroId);
                 leagueOfHeroes.Heroes.Add(hero);
             }
 
@@ -74,21 +76,6 @@ namespace MyHeroes.Controllers
             return View(leagueOfHeroes);
         }
 
-        // POST: LeagueOfHeroes/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Codigo,Name")] LeagueOfHeroes leagueOfHeroes)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(leagueOfHeroes);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return View(leagueOfHeroes);
-        //}
-
         // GET: LeagueOfHeroes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -97,46 +84,94 @@ namespace MyHeroes.Controllers
                 return NotFound();
             }
 
-            var leagueOfHeroes = await _context.LeagueOfHeroes.SingleOrDefaultAsync(m => m.Codigo == id);
+            var leagueOfHeroes = await _context.LeagueOfHeroes.SingleOrDefaultAsync(m => m.Id == id);
+            leagueOfHeroes.Heroes = await _context.Hero.ToListAsync();
+
             if (leagueOfHeroes == null)
             {
                 return NotFound();
             }
+
+            return View(leagueOfHeroes);
+        }
+
+        public List<int> ReturnCheckedHeroes(int? id)
+        {
+            var leagueOfHeroes = (from l in _context.LeagueOfHeroes.Include(x => x.Heroes)
+                                  where l.Id == id
+                                  select l).FirstOrDefault();
+            List<int> heroesChecked = new List<int>();
+
+            foreach (var hero in leagueOfHeroes.Heroes)
+            {
+                heroesChecked.Add(hero.Id);
+            }
+
+            return heroesChecked;
+        }
+
+        public async Task<IActionResult> EditLeague(int? id, string leagueName, List<int> heroes)
+        {
+            var leagueOfHeroes = (from l in _context.LeagueOfHeroes.Include(x => x.Heroes)
+                                  where l.Id == id
+                                  select l).FirstOrDefault();
+            
+
+            _context.LeagueOfHeroes.RemoveRange(leagueOfHeroes);
+            _context.SaveChanges();
+
+            leagueOfHeroes = new LeagueOfHeroes();
+            leagueOfHeroes.Name = leagueName;
+
+            foreach (var heroId in heroes)
+            {
+                Hero hero = new Hero();
+                hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == heroId);
+                leagueOfHeroes.Heroes.Add(hero);
+            }
+            
+            if (ModelState.IsValid)
+            {
+                _context.Add(leagueOfHeroes);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(leagueOfHeroes);
         }
 
         // POST: LeagueOfHeroes/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Codigo,Name")] LeagueOfHeroes leagueOfHeroes)
-        {
-            if (id != leagueOfHeroes.Codigo)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Codigo,Name")] LeagueOfHeroes leagueOfHeroes)
+        //{
+        //    if (id != leagueOfHeroes.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(leagueOfHeroes);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LeagueOfHeroesExists(leagueOfHeroes.Codigo))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(leagueOfHeroes);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(leagueOfHeroes);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!LeagueOfHeroesExists(leagueOfHeroes.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(leagueOfHeroes);
+        //}
 
         // GET: LeagueOfHeroes/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -147,7 +182,7 @@ namespace MyHeroes.Controllers
             }
 
             var leagueOfHeroes = await _context.LeagueOfHeroes
-                .SingleOrDefaultAsync(m => m.Codigo == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (leagueOfHeroes == null)
             {
                 return NotFound();
@@ -161,15 +196,18 @@ namespace MyHeroes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var leagueOfHeroes = await _context.LeagueOfHeroes.SingleOrDefaultAsync(m => m.Codigo == id);
-            _context.LeagueOfHeroes.Remove(leagueOfHeroes);
+            var leagueOfHeroes = (from l in _context.LeagueOfHeroes.Include(x => x.Heroes)
+                                  where l.Id == id
+                                  select l).FirstOrDefault();
+            _context.LeagueOfHeroes.RemoveRange(leagueOfHeroes);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LeagueOfHeroesExists(int id)
         {
-            return _context.LeagueOfHeroes.Any(e => e.Codigo == id);
+            return _context.LeagueOfHeroes.Any(e => e.Id == id);
         }
     }
 }

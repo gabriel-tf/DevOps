@@ -13133,11 +13133,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\gabri\\source\\repos\\MyHeroes\\MyHeroes\\MyHeroes.csproj",
+      "projectUniqueName": "C:\\Projetos\\DevOps\\DevWeb\\MyHeroes\\MyHeroes\\MyHeroes.csproj",
       "projectName": "MyHeroes",
-      "projectPath": "C:\\Users\\gabri\\source\\repos\\MyHeroes\\MyHeroes\\MyHeroes.csproj",
+      "projectPath": "C:\\Projetos\\DevOps\\DevWeb\\MyHeroes\\MyHeroes\\MyHeroes.csproj",
       "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gabri\\source\\repos\\MyHeroes\\MyHeroes\\obj\\",
+      "outputPath": "C:\\Projetos\\DevOps\\DevWeb\\MyHeroes\\MyHeroes\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

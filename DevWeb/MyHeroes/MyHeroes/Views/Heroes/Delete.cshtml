@@ -10,24 +10,20 @@
 <div>
     <h4>Hero</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Power)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Power)
-        </dd>
-    </dl>
-    
+    <div>
+        <h4>
+            <b>Name:</b> @Html.DisplayFor(model => model.Name)
+        </h4>
+        <h4>
+            <b>Power:</b> @Html.DisplayFor(model => model.Power)
+        </h4>
+    </div>
+    <br>
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Codigo" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <a asp-action="Index" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a> |
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
     </form>
 </div>

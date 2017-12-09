@@ -7,7 +7,7 @@ namespace MyHeroes.Models
 {
     public class Hero
     {
-        public int Codigo { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Power { get; set; }
     }

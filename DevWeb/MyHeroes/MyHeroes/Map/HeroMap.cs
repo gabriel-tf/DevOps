@@ -11,7 +11,7 @@ namespace MyHeroes.Map
     {
         public HeroMap(EntityTypeBuilder<Hero> entityBuilder)
         {
-            entityBuilder.HasKey(t => t.Codigo);
+            entityBuilder.HasKey(t => t.Id);
             entityBuilder.Property(t => t.Name).IsRequired();
             entityBuilder.Property(t => t.Power).IsRequired();
         }

@@ -11,7 +11,7 @@ namespace MyHeroes.Map
     {
         public LeagueOfHeroesMap(EntityTypeBuilder<LeagueOfHeroes> entityBuilder)
         {
-            entityBuilder.HasKey(t => t.Codigo);
+            entityBuilder.HasKey(t => t.Id);
             entityBuilder.Property(t => t.Name).IsRequired();
             entityBuilder.HasMany(t => t.Heroes);
         }

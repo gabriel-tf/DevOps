@@ -1,0 +1,29 @@
+﻿@model MyHeroes.Models.Hero
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Hero</h4>
+    <hr />
+    <div>
+        <h4>
+            <b>Name:</b> @Html.DisplayFor(model => model.Name)
+        </h4>
+        <h4>
+            <b>Power:</b> @Html.DisplayFor(model => model.Power)
+        </h4>
+    </div>
+    <br>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <a asp-action="Index" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a> |
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    </form>
+</div>

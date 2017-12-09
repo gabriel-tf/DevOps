@@ -1,0 +1,42 @@
+﻿@model MyHeroes.Models.LeagueOfHeroes
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>League of Heroes</h4>
+    <hr />
+    <div>
+        <h4>
+            <b>Name:</b> @Html.DisplayFor(model => model.Name)
+        </h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Heroes
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Heroes)
+                {
+                    <tr>
+                        <td>
+                           @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <div>
+        <a asp-action="Index" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a>
+    </div>
+</div>

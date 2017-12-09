@@ -1,0 +1,110 @@
+﻿@model MyHeroes.Models.LeagueOfHeroes
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<script>
+    $(document).ready(function () {
+
+        var name = $("#Name").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/LeagueOfHeroes/ReturnCheckedHeroes",
+            traditional: true,
+            data: {
+                id: @Model.Id,
+            },
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    $('#' + value).attr('checked', true);    
+                });
+            },
+            error: function () {
+                alert("Error!")
+            }
+        });
+
+        $("#btnSubmit").click(function () {
+            var heroes = [];
+            $("input:checked").each(function () {
+                var id = $(this).attr("id");
+                heroes.push(id);
+            });
+
+            var name = $("#Name").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/LeagueOfHeroes/EditLeague",
+                traditional: true,
+                data: {
+                    id: @Model.Id,
+                    leagueName: name,
+                    heroes: heroes
+                },
+                contentType: "application/json",
+                success: function (data) {
+                    alert("League updated with success!");
+                    window.location.href = "/LeagueOfHeroes/Index"
+                },
+                error: function () {
+                    alert("Error occured!!")
+                }
+            });
+        });
+    });
+</script>
+
+<h2>Edit</h2>
+
+<h4>League of Heroes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Heroes
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Heroes)
+                        {
+                            <tr>
+                                <td>
+                                    <input class="checkbox" type='checkbox' id="@item.Id" name='heroChecked' /> @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <a id="btnSubmit" value="Salvar" class="btn btn-default">Salvar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

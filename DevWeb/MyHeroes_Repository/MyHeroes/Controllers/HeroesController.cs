@@ -7,28 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyHeroes;
 using MyHeroes.Models;
-using MyHeroes.Service;
-using MyHeroes.Service.Interface;
+using MyHeroes.Repository;
+using MyHeroes.Repository.Interface;
 
 namespace MyHeroes.Controllers
 {
     public class HeroesController : Controller
     {
-        IHeroService _service;
-
         private readonly HeroesContext _context;
+
+        private IHeroRepository _heroRepository;
 
         public HeroesController(HeroesContext context)
         {
             _context = context;
-            _service = new HeroService(this.ModelState);
+            _heroRepository = new HeroRepository(_context);
         }
 
         // GET: Heroes
         public IActionResult Index()
         {
-            //return View(await _context.Hero.ToListAsync());
-            return View(_service.List());
+            //return View(_context.Hero.ToListAsync());
+            var heroes = _heroRepository.GetAllHeroes();
+            return View(heroes);
         }
 
         // GET: Heroes/Details/5

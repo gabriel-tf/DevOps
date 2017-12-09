@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyHeroes
 {
-    public class HeroesContext : DbContext, IUnitOfWork
+    public class HeroesContext : DbContext
     {
         private static DbContextOptions<HeroesContext> _options { get; set; }
 
@@ -23,11 +23,6 @@ namespace MyHeroes
             base.OnModelCreating(modelBuilder);
             new HeroMap(modelBuilder.Entity<Hero>());
             new LeagueOfHeroesMap(modelBuilder.Entity<LeagueOfHeroes>());
-        }
-
-        public void Save()
-        {
-            base.SaveChanges();
         }
 
         public DbSet<MyHeroes.Models.Hero> Hero { get; set; }

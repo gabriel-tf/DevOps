@@ -24,7 +24,7 @@ namespace MyHeroes
         {
             services.AddMvc();
 
-            services.AddDbContext<HeroesContext>(options => 
+            services.AddDbContext<HeroesContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 

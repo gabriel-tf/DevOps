@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-class Contador extends Component{
+class Placar extends Component{
 
     constructor(params){
         super(params)
@@ -18,13 +18,12 @@ class Contador extends Component{
     render(){
         return(
             <div> 
-                <div><h4>{this.props.nome}</h4></div>
+                <div><h4>{this.props.origem}: {this.props.time} </h4></div>
                 <div><h4>{this.state.cont}</h4></div>   
-                <button onClick={() => this.calcula(-1)}>-</button>
-                <button onClick={() => this.calcula(1)}>+</button>
+                <button onClick={() => this.calcula(1)}>Gol</button>
             </div>
         )
     }
 }
 
-export default Contador
+export default Placar

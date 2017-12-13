@@ -3,3 +3,21 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.pad {
+  padding: 10px;
+}
+
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.carousel-caption p {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.tr_clone input, .tr_clone button {
+  margin: 2px;
+}
